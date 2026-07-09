@@ -27,12 +27,21 @@ Durante o desenvolvimento, o RViz apresentava erros constantes de `unconnected t
 
 ### 3. Comportamento de Oscilação/Giro
 Observou-se que, após o envio de um novo *2D Nav Goal*, o drone por vezes apresentava movimentos de rotação indevidos ("giro no mesmo local").
-* **Possíveis Causas:**
+**Possíveis Causas:**
 - O move_base usa um algoritmo chamado Base Local Planner. Quando você envia um 2D Nav Goal, ele calcula uma trajetória. O "giro" acontece por dois motivos principais:
 
 - Zona Morta de Tolerância (yaw_goal_tolerance): Se o seu drone está a 5 graus de distância do ângulo que o move_base planejou, ele tentará girar. Se o valor for pequeno demais, ele fica oscilando entre +0.1 e -0.1 graus, resultando naquele giro infinito.
 
 - Velocidade Mínima de Rotação (min_rot_vel): Se o move_base entende que precisa girar, ele aplica uma força angular. Se o ArduPilot interpretar essa força como muito baixa, ele ignora. O move_base então aumenta a força, o drone gira rápido demais, passa do ponto, tenta corrigir, e o ciclo se repete.
+
+**Possíveis Soluções:**
+- Aumentar a yaw_goal_tolerance: Amplie a margem de erro (ex: 0.25) para evitar que o drone fique corrigindo milimetricamente uma precisão inalcançável.
+
+- Habilitar latch_xy_goal_tolerance: Defina como true para que o robô interrompa os ajustes de ângulo assim que atingir as coordenadas X,Y de destino.
+
+- Reduzir a max_rot_vel: Diminua este valor para suavizar os movimentos, impedindo que o drone gire rápido demais, passe do ponto e precise corrigir novamente.
+
+- Elevar a min_rot_vel: Aumente levemente a velocidade mínima para garantir que o comando enviado tenha força suficiente para o firmware atuar sem atrasos.
 
 ## Como Rodar
 
