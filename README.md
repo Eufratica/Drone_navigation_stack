@@ -51,10 +51,11 @@ Observou-se que, após o envio de um novo *2D Nav Goal*, o drone por vezes apres
 * Gazebo e ArduPilot SITL
 
 ### Execução
-1. **Terminal 1:** `sim_vehicle.py -v ArduCopter -f gazebo-iris`
-2. **Terminal 2:** `roslaunch mavros apm.launch`
-3. **Terminal 3:** `roslaunch drone_navigation navigation.launch`
-4. **Terminal 4:** `rviz -d seu_setup_drone.rviz`
+1. **Terminal 1:** `roslaunch iq_sim lidar.launch`
+2. **Terminal 2:** `sim_vehicle.py -v ArduCopter -f gazebo-iris`
+3. **Terminal 3:** `roslaunch mavros apm.launch`
+4. **Terminal 4:** `roslaunch drone_navigation navigation.launch`
+5. **Terminal 5:** `rviz`
 
 > **Nota:** Para decolagem, utilize o console do MAVProxy: `arm throttle`, `mode GUIDED`, `takeoff 3`.
 
