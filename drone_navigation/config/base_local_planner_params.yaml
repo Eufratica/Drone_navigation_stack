@@ -1,0 +1,47 @@
+# --- PARÂMETROS GERAIS DO MOVE_BASE ---
+controller_frequency: 10.0      # O drone reage 10x por segundo
+recovery_behaviour_enabled: true # Permite girar no próprio eixo se ficar preso
+planner_frequency: 1.0          # Recalcula a rota global 1x por segundo
+
+# --- PLANEJADOR GLOBAL (Caminho longo até o objetivo) ---
+NavfnROS:
+  allow_unknown: true 
+  default_tolerance: 0.1 
+
+# --- PLANEJADOR LOCAL (Desvio de obstáculos e execução) ---
+TrajectoryPlannerROS:
+  # 1. Dinâmica de Voo (Conservadora para estabilidade)
+  max_vel_x: 1.0
+  min_vel_x: 0.1
+  max_vel_theta: 0.5
+  min_in_place_vel_theta: 0.2
+  escape_vel: -0.1
+
+  # 2. Acelerações (CRÍTICO: Evita que o drone incline demais e caia)
+  acc_lim_x: 0.5
+  acc_lim_y: 0.5
+  acc_lim_theta: 0.5
+
+  # 3. Comportamento base
+  holonomic_robot: false # Força o drone a olhar para onde está indo (ótimo pro LiDAR frontal)
+
+  # 4. Tolerâncias de Chegada (Folga maior por causa da instabilidade no ar)
+  yaw_goal_tolerance: 0.3
+  xy_goal_tolerance: 0.4
+  latch_xy_goal_tolerance: true
+
+  # 5. Forward Simulation (Como o drone "imagina" o futuro)
+  sim_time: 2.0
+  sim_granularity: 0.05
+  angular_sim_granularity: 0.05
+  vx_samples: 10
+  vtheta_samples: 20
+
+  # 6. Trajectory Scoring (Os pesos do algoritmo do Husky)
+  meter_scoring: true 
+  occdist_scale: 0.1   # Peso para evitar obstáculos
+  pdist_scale: 0.75    # Peso para se manter colado na linha global
+  gdist_scale: 1.0     # Peso para focar em chegar logo no destino final
+  heading_lookahead: 0.325
+  dwa: true            # Usa o Dynamic Window Approach embutido
+  publish_cost_grid_pc: false # Mude para 'true' se quiser ver o grid pontilhado no RViz

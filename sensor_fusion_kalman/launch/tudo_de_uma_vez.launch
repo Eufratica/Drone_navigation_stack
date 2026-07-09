@@ -1,0 +1,28 @@
+<launch>
+    <param name="/use_sim_time" value="true" />
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom" />
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_odom" clear_params="true">
+        <rosparam command="load" file="$(find sensor_fusion_kalman)/config/ekf_odom.yaml" />
+        <remap from="odometry/filtered" to="/ekf_odom/odometry/filtered" />
+    </node>
+    
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_odom_imu" clear_params="true">
+        <rosparam command="load" file="$(find sensor_fusion_kalman)/config/ekf_odom_imu.yaml" />
+        <remap from="odometry/filtered" to="/ekf_odom_imu/odometry/filtered" />
+    </node>
+
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true">
+        <remap from="gps/fix" to="/navsat/fix" />
+        <remap from="odometry/filtered" to="/ekf_all/odometry/filtered" />
+    </node>
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_all" clear_params="true">
+        <rosparam command="load" file="$(find sensor_fusion_kalman)/config/ekf_odom_imu_gps.yaml" />
+        <remap from="odometry/filtered" to="/ekf_all/odometry/filtered" />
+    </node>
+
+    <node pkg="rosbag" type="record" name="recorder" 
+          args="record -O experimentos_finais.bag /ekf_odom/odometry/filtered /ekf_odom_imu/odometry/filtered /ekf_all/odometry/filtered /gt/odom" />
+</launch>

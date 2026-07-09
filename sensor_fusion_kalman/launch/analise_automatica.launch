@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="rosbag" type="record" name="recorder" 
+          args="record -O /tmp/resultado.bag /odometry/filtered /gt/odom" />
+
+    <node pkg="plotjuggler" type="plotjuggler" name="pj" 
+          args="--layout /workspace/ardupilot_data/catkin_ws/src/sensor_fusion_kalman/config/meu_layout_tcc.xml" />
+</launch>
+

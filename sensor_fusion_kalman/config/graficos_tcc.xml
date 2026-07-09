@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<multiplot>
+    <window>
+        <plot>
+            <title>Odometria Pura</title>
+            <curve>/ekf_odom/odometry/filtered/pose/pose/position/x</curve>
+            <curve>/gt/odom/pose/pose/position/x</curve>
+        </plot>
+        <plot>
+            <title>Odometria + IMU</title>
+            <curve>/ekf_odom_imu/odometry/filtered/pose/pose/position/x</curve>
+            <curve>/gt/odom/pose/pose/position/x</curve>
+        </plot>
+        <plot>
+            <title>Odometria + IMU + GPS</title>
+            <curve>/ekf_all/odometry/filtered/pose/pose/position/x</curve>
+            <curve>/gt/odom/pose/pose/position/x</curve>
+        </plot>
+    </window>
+</multiplot>

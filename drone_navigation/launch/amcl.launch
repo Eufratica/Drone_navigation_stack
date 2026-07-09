@@ -1,0 +1,13 @@
+<launch>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find drone_navigation)/maps/mapa_final.yaml" />
+
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <param name="odom_frame_id" value="odom"/>
+    <param name="base_frame_id" value="base_link"/>
+    <param name="global_frame_id" value="map"/>
+    <param name="initial_pose_x" value="0.0"/>
+    <param name="initial_pose_y" value="0.0"/>
+    <param name="initial_pose_a" value="0.0"/>
+    </node>
+</launch>
+

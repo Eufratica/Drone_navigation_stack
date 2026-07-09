@@ -1,0 +1,30 @@
+# Chassi do drone reduzido (50x50cm) em vez do trator do Husky
+footprint: [[-0.25, -0.25], [-0.25, 0.25], [0.25, 0.25], [0.25, -0.25]]
+footprint_padding: 0.05
+
+robot_base_frame: base_link
+update_frequency: 5.0
+publish_frequency: 2.0
+transform_tolerance: 1.0  # Tolerância alta para o Gazebo não dar timeout
+
+resolution: 0.05
+obstacle_range: 4.0
+raytrace_range: 5.0
+
+# Camada do LiDAR (O 'obstacles_laser' do Husky)
+obstacle_layer:
+  observation_sources: laser
+  laser: {
+    data_type: LaserScan, 
+    topic: /scan, 
+    marking: true, 
+    clearing: true, 
+    inf_is_valid: true,
+    min_obstacle_height: 0.3,  # Ignora o chão
+    max_obstacle_height: 2.0   # Ignora o teto
+  }
+
+# Bolha de segurança adaptada para voo
+inflation_layer:
+  inflation_radius: 0.5
+  cost_scaling_factor: 3.0
